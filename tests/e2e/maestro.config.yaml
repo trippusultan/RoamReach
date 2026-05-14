@@ -1,0 +1,17 @@
+app: com.roamreach # Replace with actual Android package ID
+# For iOS: bundleId: com.roamreach.ios
+# For Expo Go: use `expo run:android` to build APK first
+
+# Test timeout per flow (ms)
+testTimeout: 300000
+
+# Screenshot directory
+screenshotsDir: ./tests/e2e/screenshots
+
+# Report directory  
+reportDir: ./tests/e2e/report
+
+# Tags for selective runs
+tags:
+  - smoke
+  - regression

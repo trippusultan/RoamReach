@@ -1,0 +1,10 @@
+appId: host.exp.Exponent
+---
+- launchApp: {}
+- waitForAnimationToEnd: {}
+- assertVisible: R O A M R E A C H
+- tapOn: Continue with Google
+- waitForAnimationToEnd: {}
+- assertVisible: EXPLORE
+- assertVisible: DISCOVER
+- takeScreenshot: after-signin

@@ -1,0 +1,9 @@
+appId: host.exp.Exponent
+---
+- launchApp: {}
+- tapOn: Profile
+- waitForAnimationToEnd: {}
+- assertVisible: Alex Mercer
+- scroll: {}
+- assertVisible: JOURNEY
+- takeScreenshot: profile-page

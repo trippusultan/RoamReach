@@ -1,0 +1,14 @@
+appId: host.exp.Exponent
+---
+- launchApp: {}
+- tapOn: Plans
+- waitForAnimationToEnd: {}
+- tapOn: BATAM HIKE
+- waitForAnimationToEnd: {}
+- assertVisible: RATE YOUR EXPERIENCE
+- tapOn: RATE YOUR EXPERIENCE
+- waitForAnimationToEnd: {}
+- assertVisible: Rate your experience
+- takeScreenshot: rating-modal
+- tapOn: "\u2715"
+- takeScreenshot: plan-details

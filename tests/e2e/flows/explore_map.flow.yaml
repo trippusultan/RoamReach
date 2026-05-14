@@ -1,0 +1,10 @@
+appId: host.exp.Exponent
+---
+- launchApp: {}
+- tapOn: Explore
+- waitForAnimationToEnd: {}
+- assertVisible: DISCOVER
+- tapOn: Map
+- waitForAnimationToEnd: {}
+- assertVisible: nearby
+- takeScreenshot: map-view
