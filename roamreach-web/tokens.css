@@ -1,0 +1,97 @@
+/*
+  shivamjha.in – design token library
+  ═══════════════════════════════════════════════════════════════════════════
+  Source   : https://www.shivamjha.in/
+  Extracted: directly from the live Stylesheet (2026-05-15)
+  Extract  : 23 :root tokens + 23 .dark tokens via block parser
+  License  : upstream site is personal / MIT-compatible
+  ═══════════════════════════════════════════════════════════════════════════
+
+  USAGE
+  ───────────────────────────────────────────────────────────────────────────
+    1. <link rel="stylesheet" href="tokens.css">  ← before your own styles
+    2. Toggle light ↔ dark with <html class="dark"> / remove the class
+    3. Access via CSS custom properties: var(--background), etc.
+
+  TOKEN INVENTORY  (22 unique names, 44 values across both modes)
+  ───────────────────────────────────────────────────────────────────────────
+*/
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FONTS  –  Geist Sans + Geist Mono
+   ══════════════════════════════════════════════════════════════════════════
+
+   Use the CDN version for zero-install projects:
+
+     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
+   Fallback stack already embedded in every rule below.                */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LIGHT THEME
+   ══════════════════════════════════════════════════════════════════════════ */
+:root,
+.light {
+
+  /* ── semantic colours ─────────────────────────────────────────────── */
+  --background:          #fcfbf8;          /* warm cream / paper     */
+  --foreground:          #191d23;          /* charcoal heading ink   */
+  --card:                #fdfcfa9e;        /* glassy translucent     */
+  --card-foreground:     #191d23;
+  --popover:             #fdfcfaf2;
+  --popover-foreground:  #191d23;
+  --primary:             #364757;          /* dark slate – CTAs      */
+  --primary-foreground:  #fbfaf8;
+  --secondary:           #f4f3f0;          /* off-white background   */
+  --secondary-foreground:#191d23;
+  --muted:               #f5f4f1;
+  --muted-foreground:    #595e64;          /* soft mid-grey          */
+  --accent:              #f3f1ed;
+  --accent-foreground:   #1b2025;
+  --destructive:         #db3931;          /* muted coral red        */
+
+  /* ── UI primitives ────────────────────────────────────────────────── */
+  --border:              #dcdbd6;          /* warm light-grey line   */
+  --input:               #e7e6e2;
+  --ring:                #61717f3d;        /* ok-slategray @ 24% α   */
+
+  /* ── paper dust / texture (for-after layer) ────────────────────────── */
+  --texture-grid:        #3341550e;        /* slate-900 @ ~5 % α     */
+  --texture-dot:         #3341550f;
+  --texture-dot-strong:  #3341551f;
+  --paper-accent:        #e8e4dc;          /* aged-paper vignette    */
+
+  /* ── geometry ─────────────────────────────────────────────────────── */
+  --radius:              .95rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DARK THEME
+   ══════════════════════════════════════════════════════════════════════════ */
+.dark {
+
+  --background:          #0a0a09;          /* near-black warm        */
+  --foreground:          #e2e1df;          /* warm off-white         */
+  --card:                #14141380;        /* translucent dark slate */
+  --card-foreground:     #e2e1df;
+  --popover:             #141413f0;
+  --popover-foreground:  #e2e1df;
+  --primary:             #b2b1ae;          /* light silver / slate   */
+  --primary-foreground:  #0a0a09;
+  --secondary:           #1e1e1d;
+  --secondary-foreground:#e2e1df;
+  --muted:               #1b1b1a;
+  --muted-foreground:    #9f9e9c;
+  --accent:              #232322;
+  --accent-foreground:   #e2e1df;
+  --destructive:         #f97770;          /* soft coral             */
+
+  --border:              #31302fd1;        /* dark-slate @ 82 % α    */
+  --input:               #272625e0;
+  --ring:                #a5a4a23d;
+
+  --texture-grid:        #f5f5f50a;
+  --texture-dot:         #f5f5f50a;
+  --texture-dot-strong:  #f5f5f514;
+  --paper-accent:        #292928;
+}

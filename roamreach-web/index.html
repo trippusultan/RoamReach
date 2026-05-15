@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" id="theme-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abdul Taufeeq | Full-Stack &amp; AI Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       Shivam Jha design system — reproduced exactly
+       Source: https://www.shivamjha.in/
+       ═══════════════════════════════════════════════════════════════ */
+
+    :root, .light {
+      --bg:          #fcfbf8;
+      --fg:          #191d23;
+      --card:        #fdfcfa9e;
+      --primary:     #364757;
+      --secondary:   #f4f3f0;
+      --muted:       #f5f4f1;
+      --muted-fg:    #595e64;
+      --border:      #dcdbd6;
+      --accent:      #e8e4dc;
+      --texture-grid:#3341550e;
+      --texture-dot: #3341550f;
+      --radius:      .95rem;
+      --ring:        8% var(--border);
+    }
+    .dark {
+      --bg:          #0a0a09;
+      --fg:          #e2e1df;
+      --card:        #14141380;
+      --secondary:   #1e1e1d;
+      --muted:       #1b1b1a;
+      --muted-fg:    #9f9e9c;
+      --border:      #31302fd1;
+      --primary:     #b2b1ae;
+      --texture-grid:#f5f5f50a;
+      --texture-dot: #f5f5f50a;
+      --accent:      #292928;
+      --ring:        #a5a4a23d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; line-height: 1.5; }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Geist', 'Geist Fallback', ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+    body::before {
+      content: ""; pointer-events: none; z-index: -1; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--texture-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--texture-grid) 1px, transparent 1px),
+        radial-gradient(circle, var(--texture-dot) 1px, transparent 1px);
+      background-size: 72px 72px, 72px 72px, 18px 18px;
+      opacity: .5;
+    }
+    body::after {
+      content: ""; pointer-events: none; z-index: -1; position: fixed; inset: 0;
+      background:
+        radial-gradient(circle at 14% 10%, var(--accent) 0%, transparent 20%),
+        radial-gradient(circle at 86% 0%,  var(--primary) 0%, transparent 24%),
+        linear-gradient(180deg, #fcfbf85c, transparent 50%);
+      opacity: .8;
+    }
+    .dark body::after {
+      opacity: .55;
+      background:
+        radial-gradient(circle at 12% 12%, #ffffff05 0%, transparent 18%),
+        linear-gradient(#ffffff03, transparent 34%);
+    }
+    ::selection { background: var(--primary); }
+
+    h1, h2, h3 {
+      font-family: 'Geist Mono', 'Geist Mono Fallback', ui-monospace, monospace;
+      font-weight: 500; letter-spacing: -.05em; color: var(--fg);
+    }
+    h1 { font-size: 2.7rem; line-height: 1; }
+    h2 { font-size: 1.5rem; line-height: 1; }
+    h3 { font-size: 1.25rem; line-height: 1; }
+
+    .eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: .68rem; font-weight: 500; letter-spacing: .24em;
+      color: var(--muted-fg); text-transform: uppercase;
+    }
+    p  { font-size: 1rem; line-height: 1.75; }
+    a  { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; text-decoration-color: var(--border); }
+
+    /* ═══════════════════════ COMPONENTS ═══════════════════════════ */
+    .btn-saturating {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: .55rem 1.5rem;
+      border-radius: 2px; border: 1px solid transparent;
+      background: var(--fg); color: var(--bg);
+      font-family: 'Geist Mono', monospace;
+      font-size: .72rem; font-weight: 500; letter-spacing: .06em;
+      text-decoration: none !important; white-space: nowrap;
+      transition: opacity .12s;
+    }
+    .btn-saturating:hover { opacity: .84; text-decoration: none; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: .55rem 1.5rem;
+      border-radius: 2px; border: 1px solid var(--fg);
+      background: transparent; color: var(--fg);
+      font-family: 'Geist Mono', monospace;
+      font-size: .72rem; font-weight: 500; letter-spacing: .06em;
+      text-decoration: none !important; white-space: nowrap;
+      transition: background .12s, color .12s;
+    }
+    .btn-ghost:hover { background: var(--fg); color: var(--bg); }
+
+    .badge {
+      display: inline-block; padding: .3rem .7rem;
+      border: 1px solid var(--border); border-radius: 2px;
+      font-family: 'Geist Mono', monospace;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .04em; color: var(--muted-fg);
+      background: var(--secondary); white-space: nowrap;
+    }
+    .badge-filled {
+      display: inline-block; padding: .3rem .7rem;
+      border: 1px solid var(--border); border-radius: 2px;
+      font-family: 'Geist Mono', monospace;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .04em; color: var(--fg);
+      white-space: nowrap;
+    }
+
+    /* ── brand-pill: icon + label links (GitHub / Instagram / Ryte) ───────── */
+    .brand-pill {
+      display: inline-flex; align-items: center;
+      gap: .4rem;
+      padding: .32rem .65rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: 'Geist Mono', monospace;
+      font-size: .68rem; font-weight: 500;
+      letter-spacing: .04em;
+      color: var(--muted-fg);
+      white-space: nowrap;
+      text-decoration: none !important;
+      transition: border-color .12s, color .12s;
+    }
+    .brand-pill:hover { border-color: var(--fg); color: var(--fg); text-decoration: none; }
+
+    .card-divider {
+      border-top: 1px solid var(--border);
+      margin-block: 3rem;
+    }
+
+    .icon-btn {
+      display: grid; place-items: center;
+      width: 32px; height: 32px;
+      border: 1px solid var(--border); border-radius: 2px;
+      color: var(--muted-fg); text-decoration: none !important;
+      transition: color .12s, border-color .12s;
+    }
+    .icon-btn:hover { color: var(--fg); border-color: var(--fg); text-decoration: none; }
+
+    #theme-toggle {
+      display: grid; place-items: center;
+      width: 32px; height: 32px;
+      border: 1px solid var(--border); border-radius: 2px;
+      background: transparent; color: var(--fg); cursor: pointer;
+      font-size: 14px; line-height: 1;
+    }
+    #theme-toggle:hover { background: var(--fg); color: var(--bg); }
+
+    /* ═══════════════════════ LAYOUT ═══════════════════════════ */
+    .max-w-6xl { max-width: 72rem; margin-inline: auto; padding-inline: 1.5rem; }
+    @media (min-width: 40rem) { .max-w-6xl { padding-inline: 2.5rem; } }
+
+    section { padding-block: 3rem 5rem; }
+    .section-eyebrow { margin-bottom: .75rem; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .text-link {
+      color: inherit; text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px; transition: border-color .12s;
+    }
+    .text-link:hover { border-color: var(--fg); text-decoration: none; }
+
+    /* ═══════════════════ STATS BAR ═══════════════════════════════ */
+    .stats-row {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      padding: 1rem 0; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 1.25rem 0;
+    }
+    .stat { display: flex; flex-direction: column; gap: .2rem; }
+    .stat-val {
+      font-family: 'Geist Mono', monospace;
+      font-size: 1.1rem; font-weight: 500; letter-spacing: -.05em;
+    }
+    .stat-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: .65rem; letter-spacing: .2em;
+      color: var(--muted-fg); text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-6xl">
+
+    <!-- ═══ HEADER ═══ -->
+    <header style="display:flex;justify-content:space-between;align-items:center;padding:1.25rem 0;">
+      <a href="https://github.com/trippusultan" style="display:flex;gap:.75rem;align-items:center;text-decoration:none;">
+        <span style="font-family:'Geist Mono',monospace;font-size:.85rem;font-weight:500;letter-spacing:-.02em;">AT</span>
+        <span style="font-family:'Geist Mono',monospace;font-size:.68rem;letter-spacing:.24em;color:var(--muted-fg);">ABDUL TAUFEEQ</span>
+      </a>
+      <nav style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;">
+        <a href="#projects" style="font-family:'Geist Mono',monospace;font-size:.68rem;letter-spacing:.14em;color:var(--muted-fg);">PROJECTS</a>
+        <a href="https://github.com/trippusultan" style="font-family:'Geist Mono',monospace;font-size:.68rem;letter-spacing:.14em;color:var(--muted-fg);">GITHUB</a>
+        
+        <button id="theme-toggle" aria-label="Toggle theme">◑</button>
+      </nav>
+    </header>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0 2.5rem;">
+
+    <!-- ═══ PROFILE HERO ═══ -->
+    <section id="hero" style="padding-top:1rem;padding-bottom:2rem;">
+      <div class="two-col">
+        <!-- left: bio + badges + buttons -->
+        <div style="display:flex;flex-direction:column;justify-content:center;gap:1.25rem;">
+          <p style="font-size:1.05rem;line-height:1.75;max-width:40rem;">
+            I get shit done. Building practical software across web, mobile, and AI.
+            Curious about systems, infrastructure, and developer tools.
+          </p>
+          <p class="eyebrow" style="margin-top:.5rem;">
+            FULL-STACK &amp; AI ENGINEERING
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;">
+            <span class="badge-filled">14 Repositories</span>
+            <span class="badge-filled">Open to work</span>
+            <span class="badge-filled">AI / LLMs</span>
+            <span class="badge-filled">AI-native</span>
+          </div>
+
+          <!-- GitHub stats bar -->
+          <div style="display:flex;gap:2rem;padding:.85rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:.5rem;">
+            <div>
+              <div style="font-family:'Geist Mono',monospace;font-size:1rem;font-weight:500;letter-spacing:-.05em;">14</div>
+              <div style="font-family:'Geist Mono',monospace;font-size:.625rem;letter-spacing:.18em;color:var(--muted-fg);text-transform:uppercase;">Repos</div>
+            </div>
+            <div>
+              <div style="font-family:'Geist Mono',monospace;font-size:1rem;font-weight:500;letter-spacing:-.05em;">6</div>
+              <div style="font-family:'Geist Mono',monospace;font-size:.625rem;letter-spacing:.18em;color:var(--muted-fg);text-transform:uppercase;">Languages</div>
+            </div>
+            <div>
+              <div style="font-family:'Geist Mono',monospace;font-size:1rem;font-weight:500;letter-spacing:-.05em;">2</div>
+              <div style="font-family:'Geist Mono',monospace;font-size:.625rem;letter-spacing:.18em;color:var(--muted-fg);text-transform:uppercase;">Following</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:.6rem;margin-top:1.5rem;">
+            <a href="#projects" class="btn-saturating">VIEW PROJECTS</a>
+            <a href="#" class="btn-ghost">RESUME</a>
+            <a href="mailto:sultantrippu@gmail.com" class="btn-ghost">EMAIL</a>
+          </div>
+        </div>
+
+        <!-- right: avatar + name + GitHub handle + bio -->
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1rem;">
+          <div style="width:128px;height:128px;border-radius:50%;border:1px solid var(--border);overflow:hidden;background:var(--muted);">
+            <img src="https://avatars.githubusercontent.com/u/210419690?v=4"
+                 alt="Abdul Taufeeq"
+                 style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+          </div>
+          <h1 style="font-size:clamp(2.75rem,7vw,4rem);">ABDUL TAUFEEQ</h1>
+          <p class="eyebrow" style="letter-spacing:.18em;font-size:.72rem;">
+            FULL-STACK &amp; AI ENGINEERING
+          </p>
+          <!-- brand links as muted pills (↗) -->
+          <div style="display:flex;flex-direction:column;gap:.45rem;margin-top:.3rem;">
+            <a href="https://github.com/trippusultan" class="brand-pill">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub · @trippusultan
+            </a>
+            </a>
+            <a href="https://www.ryteproductions.in" class="brand-pill">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 107 7 7 7 0 00-7-7zm0 12.3a5.3 5.3 0 115.3-5.3A5.3 5.3 0 018 13.3zm6.8-8.9A2.16 2.16 0 1113.7 5.7a2.17 2.17 0 01-1.9 3.7zM8 3.8a3.2 3.2 0 113.2 3.2A3.22 3.22 0 018 3.8z"/></svg>
+              ryteproductions.in
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="card-divider"></div>
+
+    <!-- ═══ ABOUT ═══ -->
+    <section id="about">
+      <div class="eyebrow section-eyebrow">ABOUT</div>
+      <h2 style="margin-bottom:1.75rem;font-size:1.5rem;">IIT Mandi, CTO, Builder.</h2>
+      <div style="max-width:54rem;font-size:.9rem;line-height:1.8;color:var(--muted-fg);">
+        <p style="margin-bottom:1rem;">
+          Studied at IIT Mandi from 2019–2023. Since 2023 I've been doing freelance gigs and building
+          open-source projects across web, mobile, and AI — full-stack from database to deployment.
+        </p>
+        <p style="margin-bottom:1rem;">
+          I'm the <strong>CTO at Ryte Productions</strong>
+          <a href="https://www.ryteproductions.in" class="text-link">ryteproductions.in</a>),
+          in charge of all things IT — infrastructure, tooling, and product engineering.
+        </p>
+        <p style="margin-bottom:1rem;">
+          Currently building <a href="https://github.com/trippusultan/RoamReach" class="text-link">RoamReach</a>,
+          a real-time backpacker meetup app powered by Expo, React Native, Supabase, and Gemini AI.
+        </p>
+        <p>
+          I care about shipping things that work, keeping deploys boring, and staying close enough to the code
+          to fix it fast. When something breaks at 2 AM I want the logs to tell the truth.
+        </p>
+      </div>
+    </section>
+
+    <div class="card-divider"></div>
+
+    <div class="card-divider"></div>
+
+    <!-- ═══ EXPERIENCE ═══ -->
+    <section id="experience">
+      <div class="eyebrow section-eyebrow">EXPERIENCE</div>
+      <h2 style="margin-bottom:2.5rem;font-size:1.5rem;">Freelance and CTO roles across web, mobile, and AI.</h2>
+
+      <div style="margin-bottom:2.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.75rem;">
+          <h3 style="font-size:1rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">CTO</h3>
+          <span style="font-family:'Geist Mono',monospace;font-size:.68rem;color:var(--muted-fg);">2025 — Present</span>
+        </div>
+        <div style="margin-bottom:.75rem;font-size:.875rem;color:var(--muted-fg);">
+          <a href="https://www.ryteproductions.in" class="text-link">ryteproductions.in</a>
+        </div>
+        <ul style="list-style:disc;padding-left:1.25rem;display:flex;flex-direction:column;gap:.35rem;">
+          <li style="font-size:.875rem;color:var(--muted-fg);">Manage all IT operations — infrastructure, tooling, and product engineering.</li>
+          <li style="font-size:.875rem;color:var(--muted-fg);">Own the full stack from database to deployment.</li>
+          <li style="font-size:.875rem;color:var(--muted-fg);">Build and maintain production systems with clean, observable code.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.75rem;">
+          <h3 style="font-size:1rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">Freelance App Developer</h3>
+          <span style="font-family:'Geist Mono',monospace;font-size:.68rem;color:var(--muted-fg);">2024 — 2025</span>
+        </div>
+        <ul style="list-style:disc;padding-left:1.25rem;display:flex;flex-direction:column;gap:.35rem;">
+          <li style="font-size:.875rem;color:var(--muted-fg);">Built mobile and web apps for clients as an independent contractor.</li>
+          <li style="font-size:.875rem;color:var(--muted-fg);">Worked across React Native, Expo, Node.js, and TypeScript.</li>
+          <li style="font-size:.875rem;color:var(--muted-fg);">Shipped features end-to-end, from design review to production deploys.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══ ENGINEERING FOCUS ═══ -->
+    <section>
+      <div class="eyebrow section-eyebrow">ENGINEERING FOCUS</div>
+      <div class="two-col" style="gap:4rem;margin-top:1.5rem;">
+        <div>
+          <h3 style="font-size:.98rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;margin-bottom:.75rem;">Full-stack web &amp; mobile</h3>
+          <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;">
+            React, React Native, Expo, Node.js, FastAPI, Supabase, PostgreSQL, WebRTC.
+            Shipping features end-to-end without waiting for someone else to own it.
+          </p>
+        </div>
+        <div>
+          <h3 style="font-size:.98rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;margin-bottom:.75rem;">AI / LLMs</h3>
+          <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;">
+            LLM integrations, AI-native developer tools, prompt engineering, and MCP-based
+            agentic systems. Building tools that explain code, not just generate it.
+          </p>
+        </div>
+      </div>
+      <div class="two-col" style="gap:4rem;margin-top:2rem;">
+        <div>
+          <h3 style="font-size:.98rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;margin-bottom:.75rem;">DevOps &amp; infra</h3>
+          <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;">
+            CI/CD, Docker, Linux, cloud infrastructure, and deploy hygiene.
+            A deploy should be boring; observability should be boring; the pager should stay quiet.
+          </p>
+        </div>
+        <div>
+          <h3 style="font-size:.98rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;margin-bottom:.75rem;">Languages &amp; tools</h3>
+          <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;">
+            TypeScript, Python, JavaScript, Flutter, and Go for systems work.
+            AST manipulation, FastAPI backends, clean API design.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="card-divider"></div>
+
+    <!-- ═══ TECH STACK ═══ -->
+    <section id="stack">
+      <div class="eyebrow section-eyebrow">TECH STACK</div>
+      <p style="margin-bottom:1.75rem;font-size:.875rem;color:var(--muted-fg);max-width:54rem;">
+        Tools and languages I use across web, mobile, AI, and infrastructure projects.
+      </p>
+
+      <p style="margin-bottom:.75rem;font-size:.725rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-fg);">Languages</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;">
+        <span class="badge">TypeScript</span>
+        <span class="badge">Python</span>
+        <span class="badge">JavaScript</span>
+        <span class="badge">Flutter / Dart</span>
+        <span class="badge">Go</span>
+        <span class="badge">SQL</span>
+        <span class="badge">Solidity</span>
+      </div>
+
+      <p style="margin-bottom:.75rem;font-size:.725rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-fg);">Web &amp; Mobile</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;">
+        <span class="badge">React</span>
+        <span class="badge">React Native</span>
+        <span class="badge">Expo</span>
+        <span class="badge">Node.js</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">Vite</span>
+        <span class="badge">WebRTC</span>
+        <span class="badge">PL/pgSQL</span>
+      </div>
+
+      <p style="margin-bottom:.75rem;font-size:.725rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-fg);">AI &amp; Data</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;">
+        <span class="badge">AI / LLMs</span>
+        <span class="badge">MCP</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">Python</span>
+        <span class="badge">D3.js</span>
+      </div>
+
+      <p style="margin-bottom:.75rem;font-size:.725rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-fg);">Infra &amp; DevOps</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;">
+        <span class="badge">Docker</span>
+        <span class="badge">AWS</span>
+        <span class="badge">Linux</span>
+        <span class="badge">GitHub Actions</span>
+        <span class="badge">Git</span>
+      </div>
+    </section>
+
+    <div class="card-divider"></div>
+
+    <!-- ═══ FEATURED PROJECTS ═══ -->
+    <section id="projects">
+      <div class="eyebrow section-eyebrow">FEATURED PROJECTS</div>
+      <h2 style="margin-bottom:2rem;font-size:1.5rem;">Open-source projects spanning AI, video, mobile, fintech, and infrastructure.</h2>
+
+      <!-- archestra -->
+      <a href="https://github.com/trippusultan/archestra" class="text-link" style="display:block;margin-bottom:1.25rem;text-decoration:none;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;padding-bottom:.75rem;">
+          <span class="eyebrow" style="font-size:.625rem;">2025 — Present</span>
+          <h3 style="font-size:1.05rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">
+            archestra &nbsp;<span style="color:var(--border);font-weight:400;font-size:.82rem;">AI Platform · TypeScript · MCP · Enterprise</span>
+          </h3>
+          <span class="eyebrow" style="font-size:.6rem;">GitHub · Site →</span>
+        </div>
+        <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;max-width:54rem;margin-top:.5rem;">
+          MCP-native secure AI platform. Simplifies AI usage in companies with a user-friendly MCP toolbox,
+          observability, and control built on a strong security foundation.
+          <a href="https://archestra.ai" class="text-link">archestra.ai</a>
+        </p>
+      </a>
+
+      <!-- reframe -->
+      <a href="https://github.com/trippusultan/reframe" class="text-link" style="display:block;margin-bottom:1.25rem;text-decoration:none;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;padding-bottom:.75rem;">
+          <span class="eyebrow" style="font-size:.625rem;">2025 — Present</span>
+          <h3 style="font-size:1.05rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">
+            reframe &nbsp;<span style="color:var(--border);font-weight:400;font-size:.82rem;">Video Editor · TypeScript · WebRTC · Browser-native</span>
+          </h3>
+          <span class="eyebrow" style="font-size:.6rem;">GitHub →</span>
+        </div>
+        <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;max-width:54rem;margin-top:.5rem;">
+          Free, open-source video editor that runs entirely in your browser. No login, no uploads, no ads —
+          built with WebRTC + Canvas API. Runs entirely client-side.
+        </p>
+      </a>
+
+      <!-- RoamReach -->
+      <a href="https://github.com/trippusultan/RoamReach" class="text-link" style="display:block;margin-bottom:1.25rem;text-decoration:none;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;padding-bottom:.75rem;">
+          <span class="eyebrow" style="font-size:.625rem;">2025 — Present</span>
+          <h3 style="font-size:1.05rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">
+            RoamReach &nbsp;<span style="color:var(--border);font-weight:400;font-size:.82rem;">React Native · Expo · Supabase · AI</span>
+          </h3>
+          <span class="eyebrow" style="font-size:.6rem;">GitHub →</span>
+        </div>
+        <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;max-width:54rem;margin-top:.5rem;">
+          Real-time backpacker meetup app built with Expo and React Native. Connects travelers with shared
+          routes and interests. Integrates Gemini AI via MCP for intelligent match suggestions.
+          Full Expo Router + Zustand + Supabase stack.
+        </p>
+      </a>
+
+      <!-- QuantNova -->
+      <a href="https://github.com/trippusultan/QuantNova" class="text-link" style="display:block;margin-bottom:1.25rem;text-decoration:none;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;padding-bottom:.75rem;">
+          <span class="eyebrow" style="font-size:.625rem;">2025 — Present</span>
+          <h3 style="font-size:1.05rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">
+            QuantNova &nbsp;<span style="color:var(--border);font-weight:400;font-size:.82rem;">React · TypeScript · FastAPI · Fintech</span>
+          </h3>
+          <span class="eyebrow" style="font-size:.6rem;">GitHub · Site →</span>
+        </div>
+        <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;max-width:54rem;margin-top:.5rem;">
+          Open-source GUI-based quantitative backtesting platform for strategy development. React front-end
+          with Vite, FastAPI back-end, Binance API integration, and D3.js visualisations for equity curves.
+          <a href="https://www.quantnova.in" class="text-link">quantnova.in</a>
+        </p>
+      </a>
+
+      <!-- Aratea -->
+      <a href="https://github.com/trippusultan/Aratea" class="text-link" style="display:block;margin-bottom:1.25rem;text-decoration:none;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;padding-bottom:.75rem;">
+          <span class="eyebrow" style="font-size:.625rem;">2025 — Present</span>
+          <h3 style="font-size:1.05rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">
+            Aratea &nbsp;<span style="color:var(--border);font-weight:400;font-size:.82rem;">Python · Solidity · DeFi · Weather Oracle</span>
+          </h3>
+          <span class="eyebrow" style="font-size:.6rem;">GitHub →</span>
+        </div>
+        <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;max-width:54rem;margin-top:.5rem;">
+          Open-source weather prediction markets and decentralized parametric mutual insurance.
+          Python ML forecasting, Solidity smart contracts on Arbitrum, and on-chain weather oracles.
+          Bilingual documentation (EN / FR).
+        </p>
+      </a>
+
+      <!-- enclosed -->
+      <a href="https://github.com/trippusultan/enclosed" class="text-link" style="display:block;margin-bottom:1rem;text-decoration:none;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;padding-bottom:.75rem;">
+          <span class="eyebrow" style="font-size:.625rem;">2025 — Present</span>
+          <h3 style="font-size:1.05rem;font-family:'Geist Mono',monospace;letter-spacing:-.04em;">
+            enclosed &nbsp;<span style="color:var(--border);font-weight:400;font-size:.82rem;">TypeScript · WebCrypto · Secure Notes</span>
+          </h3>
+          <span class="eyebrow" style="font-size:.6rem;">GitHub →</span>
+        </div>
+        <p style="font-size:.875rem;color:var(--muted-fg);line-height:1.7;max-width:54rem;margin-top:.5rem;">
+          Minimalistic web app for sending private and secure notes. End-to-end encryption via WebCrypto,
+          zero-knowledge design — notes are decrypted only by the intended recipient.
+        </p>
+      </a>
+    </section>
+
+    <div class="card-divider"></div>
+
+    <!-- ═══ CONTACT ═══ -->
+    <section id="contact">
+      <div class="eyebrow section-eyebrow">GET IN TOUCH</div>
+      <h2 style="margin-bottom:.75rem;font-size:1.5rem;">Got an idea, let's talk.</h2>
+      <p style="margin-bottom:2rem;max-width:42rem;font-size:.875rem;color:var(--muted-fg);">
+        Open to contributing to projects, open-source collaboration, and interesting problems
+        at the intersection of AI, infrastructure, and developer tools.
+        Best reached on GitHub or Telegram.
+      </p>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <a href="https://wa.me/917993125277" class="btn-saturating">WHATSAPP</a>
+                      </div>
+      <div style="margin-top:2rem;display:flex;flex-direction:column;gap:.6rem;">
+        <a href="mailto:sultantrippu@gmail.com" class="text-link" style="font-family:'Geist Mono',monospace;font-size:.8rem;letter-spacing:.06em;">
+          sultantrippu@gmail.com
+        </a>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer style="padding-block:4rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border);">
+      <div class="eyebrow">© 2026 ABDUL TAUFEEQ</div>
+      <div style="display:flex;gap:.6rem;">
+        <a href="https://github.com/trippusultan" class="icon-btn" aria-label="GitHub">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M11.5 1.5L9.5 5.5L14.5 11.5L12.5 13.5L7.5 8.5L6 12L1 8.5L3 5.5L1 3.5L2.5 1.5L11.5 1.5Z"/>
+          </svg>
+        </a>
+        <a href="mailto:sultantrippu@gmail.com" class="icon-btn" aria-label="Email">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <rect x="2" y="4" width="12" height="8" rx="1"/>
+            <path d="M2 4l6 4 6-4"/>
+          </svg>
+        </a>
+      </div>
+    </footer>
+
+  </div><!-- /.max-w-6xl -->
+
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const KEY  = 'shivmjha-theme';
+      const saved = localStorage.getItem(KEY);
+      if (saved) root.classList.toggle('dark', saved === 'dark');
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        root.classList.toggle('dark');
+        localStorage.setItem(KEY, root.classList.contains('dark') ? 'dark' : 'light');
+      });
+    })();
+  </script>
+</body>
+</html>
