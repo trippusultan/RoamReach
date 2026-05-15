@@ -11,6 +11,11 @@ export const supabase: SupabaseClient<Database> = createClient<Database>(
     auth: {
       persistSession: true,
       autoRefreshToken: true,
+      // After Google/Apple redirect, land back on this route
+      // AuthGate below handles the session from the URL hash
+      detectSessionInUrl: true,
+      flowType: 'implicit',
+      storage: undefined,                // use default (AsyncStorage on native, localStorage on web)
     },
   }
 );

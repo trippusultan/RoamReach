@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, Fonts, Spacing, Radii } from '../../src/constants/theme';
+import { useAuthStore } from '../../src/stores/authStore';
 import { GoldButton } from '../../src/components/common/GoldButton';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -61,6 +62,14 @@ export default function OnboardingScreen() {
       }
     }
   ).current;
+
+  // Redirect to explore if user is already signed in
+  const { isAuthenticated, isLoading: authLoading } = useAuthStore();
+  useEffect(() => {
+    if (isAuthenticated && !authLoading) {
+      router.replace('/(tabs)/explore');
+    }
+  }, [isAuthenticated, authLoading]);
 
   const handleNext = () => {
     if (currentIndex < SLIDES.length - 1) {

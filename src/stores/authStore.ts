@@ -26,7 +26,7 @@ interface AuthState {
   isOnboarded: boolean;
   isLoading: boolean;
   signIn: (email?: string, password?: string) => Promise<void>;
-  signInWithOAuth: (provider?: 'google' | 'apple') => Promise<void>;
+  signInWithOAuth: (provider?: 'google' | 'apple', redirectTo?: string) => Promise<void>;
   signOut: () => Promise<void>;
   completeOnboarding: (profile?: Partial<UserProfile>) => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
@@ -112,6 +112,29 @@ export const useAuthStore = create<AuthState>((set, get) => {
 
     supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
+        // Ensure profile row exists (create stub from OAuth metadata)
+        const { data: existing } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', session.user.id)
+          .maybeSingle();
+
+        if (!existing) {
+          const meta = session.user.user_metadata || {};
+          await supabase.from('profiles').insert({
+            id: session.user.id,
+            name: meta.full_name || meta.name || 'Traveler',
+            email: session.user.email || '',
+            avatar_url: meta.avatar_url || null,
+            city: '',
+            country_code: 'US',
+            current_city: '',
+            is_verified: false,
+            rating: 0,
+            followers_count: 0,
+          } as any);
+        }
+
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
@@ -137,6 +160,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
           const { error } = await supabase.auth.signInWithPassword({ email, password });
           if (error) throw error;
         } else {
+          // OAuth redirect handled by sign-in screen useEffect + onAuthStateChange
           await get().signInWithOAuth('google');
         }
       } else {
@@ -165,10 +189,13 @@ export const useAuthStore = create<AuthState>((set, get) => {
         });
       }
     },
-    signInWithOAuth: async (provider: 'google' | 'apple' = 'google') => {
+    signInWithOAuth: async (provider: 'google' | 'apple' = 'google', redirectTo?: string) => {
       if (isSupabaseConfigured()) {
         set({ isLoading: true });
-        const { error } = await supabase.auth.signInWithOAuth({ provider });
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: redirectTo ? { redirectTo } : undefined,
+        });
         if (error) throw error;
       } else {
         // Mock

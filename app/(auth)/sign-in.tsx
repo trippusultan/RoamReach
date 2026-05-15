@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Alert, Platform } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,14 +7,29 @@ import { Colors, Fonts, Spacing, Radii } from '../../src/constants/theme';
 import { useAuthStore } from '../../src/stores/authStore';
 
 export default function SignInScreen() {
-  const { signIn, signInWithOAuth } = useAuthStore();
+  const { signIn, signInWithOAuth, isAuthenticated, isLoading } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Navigate to Explore once Supabase has a live session.
+  // onAuthStateChange fires after the OAuth redirect is processed.
+  const [wasOnSignIn, setWasOnSignIn] = useState(true);
+
+  useEffect(() => {
+    // Only navigate if we started on the sign-in screen
+    if (isAuthenticated && wasOnSignIn) {
+      router.replace('/(tabs)/explore');
+    }
+  }, [isAuthenticated, wasOnSignIn]);
+
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithOAuth('google');
-      router.replace('/(tabs)/explore');
+      // Build redirect URL — must match what's configured in Supabase Dashboard
+      const redirectTo = Platform.select({
+        web: process.env.EXPO_PUBLIC_REDIRECT_URL,
+        default: undefined,   // native: Supabase uses the app's custom scheme / deep link
+      });
+      await signInWithOAuth('google', redirectTo);
     } catch (error: any) {
       Alert.alert('Sign In Failed', error.message);
     }
@@ -22,17 +37,20 @@ export default function SignInScreen() {
 
   const handleAppleSignIn = async () => {
     try {
-      await signInWithOAuth('apple');
-      router.replace('/(tabs)/explore');
+      const redirectTo = Platform.select({
+        web:  (process.env.EXPO_PUBLIC_REDIRECT_URL || (typeof window !== 'undefined' ? window.location.origin : undefined)),
+        default: undefined,
+      });
+      await signInWithOAuth('apple', redirectTo);
     } catch (error: any) {
       Alert.alert('Sign In Failed', error.message);
     }
   };
 
-  const handleSignIn = async () => {
+  const handleEmailSignIn = async () => {
     try {
       await signIn(email, password);
-      router.replace('/(tabs)/explore');
+      // onAuthStateChange → useEffect above navigates
     } catch (error: any) {
       Alert.alert('Sign In Failed', error.message);
     }
@@ -48,7 +66,7 @@ export default function SignInScreen() {
 
       {/* Welcome text */}
       <View style={styles.welcomeSection}>
-        <Text style={styles.welcomeTitle}>Welcome back,{'\n'}explorer.</Text>
+        <Text style={styles.welcomeTitle}>Welcome back,{'"\n"'}explorer.</Text>
         <Text style={styles.welcomeDesc}>
           Sign in to reconnect with travelers nearby and discover what&apos;s happening tonight.
         </Text>
@@ -56,17 +74,29 @@ export default function SignInScreen() {
 
       {/* Auth buttons */}
       <View style={styles.authSection}>
-        <TouchableOpacity style={styles.authButton} onPress={handleGoogleSignIn} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={[styles.authButton, isLoading && styles.authButtonDisabled]}
+          onPress={handleGoogleSignIn}
+          activeOpacity={0.8}
+          disabled={isLoading}
+        >
           <LinearGradient
             colors={[Colors.surfaceContainerHigh, Colors.surfaceContainerLow]}
             style={styles.authGradient}
           >
             <Ionicons name="logo-google" size={22} color={Colors.onSurface} />
-            <Text style={styles.authText}>Continue with Google</Text>
+            <Text style={styles.authText}>
+              {isLoading ? 'Connecting…' : 'Continue with Google'}
+            </Text>
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.authButton} onPress={handleAppleSignIn} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={[styles.authButton, isLoading && styles.authButtonDisabled]}
+          onPress={handleAppleSignIn}
+          activeOpacity={0.8}
+          disabled={isLoading}
+        >
           <LinearGradient
             colors={[Colors.surfaceContainerHigh, Colors.surfaceContainerLow]}
             style={styles.authGradient}
@@ -83,8 +113,31 @@ export default function SignInScreen() {
           <View style={styles.divider} />
         </View>
 
-        {/* Email */}
-        <TouchableOpacity style={styles.goldAuth} onPress={handleSignIn} activeOpacity={0.8}>
+        {/* Email inputs */}
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor={Colors.onSurfaceDim}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor={Colors.onSurfaceDim}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+
+        <TouchableOpacity
+          style={[styles.goldAuth, isLoading && styles.authButtonDisabled]}
+          onPress={handleEmailSignIn}
+          activeOpacity={0.8}
+          disabled={isLoading}
+        >
           <LinearGradient
             colors={[Colors.gold, Colors.goldDark]}
             start={{ x: 0, y: 0 }}
@@ -93,10 +146,15 @@ export default function SignInScreen() {
           >
             <Ionicons name="mail-outline" size={20} color={Colors.onGold} />
             <Text style={[styles.authText, { color: Colors.onGold }]}>
-              Sign in with Email
+              {isLoading ? 'Signing in…' : 'Sign in with Email'}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
+
+        {/* Demo account hint */}
+        <Text style={styles.demoHint}>
+          Demo accounts created in SQL — use Google or Apple to test the real flow.
+        </Text>
       </View>
 
       {/* Terms */}
@@ -115,16 +173,17 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surface,
     paddingHorizontal: Spacing.lg,
     justifyContent: 'center',
+    gap: Spacing.lg,
   },
   logoSection: {
     alignItems: 'center',
-    marginBottom: Spacing.xxl,
+    marginBottom: Spacing.md,
+    gap: Spacing.xs,
   },
   brand: {
     ...Fonts.headlineSmall,
     color: Colors.gold,
     letterSpacing: 8,
-    marginBottom: Spacing.sm,
   },
   subtitle: {
     ...Fonts.labelMedium,
@@ -132,12 +191,12 @@ const styles = StyleSheet.create({
     letterSpacing: 3,
   },
   welcomeSection: {
-    marginBottom: Spacing.xxl,
+    marginBottom: Spacing.md,
+    gap: Spacing.sm,
   },
   welcomeTitle: {
     ...Fonts.headlineLarge,
     color: Colors.onSurface,
-    marginBottom: Spacing.sm,
   },
   welcomeDesc: {
     ...Fonts.bodyLarge,
@@ -145,13 +204,15 @@ const styles = StyleSheet.create({
   },
   authSection: {
     gap: Spacing.md,
-    marginBottom: Spacing.xl,
   },
   authButton: {
     borderRadius: Radii.lg,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: Colors.outlineVariant,
+  },
+  authButtonDisabled: {
+    opacity: 0.5,
   },
   goldAuth: {
     borderRadius: Radii.lg,
@@ -169,6 +230,16 @@ const styles = StyleSheet.create({
     ...Fonts.titleSmall,
     color: Colors.onSurface,
   },
+  input: {
+    backgroundColor: Colors.surfaceContainerHigh,
+    borderRadius: Radii.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+    ...Fonts.bodyLarge,
+    color: Colors.onSurface,
+    borderWidth: 1,
+    borderColor: Colors.outlineVariant,
+  },
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -184,13 +255,21 @@ const styles = StyleSheet.create({
     ...Fonts.bodySmall,
     color: Colors.onSurfaceDim,
   },
+  demoHint: {
+    ...Fonts.bodySmall,
+    color: Colors.goldMuted,
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
   terms: {
     ...Fonts.bodySmall,
     color: Colors.onSurfaceDim,
     textAlign: 'center',
     paddingHorizontal: Spacing.lg,
+    marginTop: Spacing.sm,
   },
   link: {
     color: Colors.gold,
+    fontWeight: '600',
   },
 });
